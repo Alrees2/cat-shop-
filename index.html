@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>متجر القطط</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- الصفحة الرئيسية -->
+  <div id="storePage" class="page">
+    <header>
+      <h1>متجر القطط</h1>
+    </header>
+    <main>
+      <h2>القطط المتوفرة</h2>
+      <div id="catsContainer" class="cats-container">
+        <!-- سيتم ملء بيانات القطط ديناميكيًا -->
+      </div>
+    </main>
+    <footer>
+      <button onclick="showAdminPanel()">لوحة التحكم</button>
+    </footer>
+  </div>
+
+  <!-- لوحة التحكم -->
+  <div id="adminPage" class="page hidden">
+    <header>
+      <h1>لوحة التحكم</h1>
+    </header>
+    <main>
+      <h2>إدارة القطط</h2>
+      <form id="addCatForm">
+        <input type="text" id="catName" placeholder="اسم القطة" required>
+        <input type="number" id="catAge" placeholder="عمر القطة (بالشهور)" required>
+        <input type="number" id="catPrice" placeholder="السعر" required>
+        <input type="text" id="catImage" placeholder="رابط صورة القطة" required>
+        <button type="submit">إضافة القطة</button>
+      </form>
+      <h3>القائمة الحالية</h3>
+      <ul id="adminCatsList">
+        <!-- سيتم ملء بيانات القطط ديناميكيًا -->
+      </ul>
+    </main>
+    <footer>
+      <button onclick="showStore()">العودة إلى المتجر</button>
+    </footer>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
