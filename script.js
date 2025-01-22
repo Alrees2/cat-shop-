@@ -1,23 +1,86 @@
-// تخزين البيانات في LocalStorage
+// تخزين بيانات المستخدمين
+const users = [
+  { username: "admin", password: "admin123", role: "admin" }, // بيانات الإدمن
+  { username: "user1", password: "user123", role: "user" } // بيانات مستخدم عادي
+];
+
 const defaultCats = [
   { name: "لوسي", age: 3, price: 150, image: "cat1.jpg" },
   { name: "ماكس", age: 5, price: 200, image: "cat2.jpg" }
 ];
 
-function getCats() {
-  const cats = JSON.parse(localStorage.getItem("cats"));
-  return cats || defaultCats;
+// دالة تسجيل الدخول
+document.getElementById("loginForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  const user = users.find(user => user.username === username && user.password === password);
+  if (user) {
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    if (user.role === "admin") {
+      showAdminPage();
+    } else {
+      showStorePage();
+    }
+  } else {
+    alert("اسم المستخدم أو كلمة المرور غير صحيحة.");
+  }
+});
+
+// دالة إنشاء حساب
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const newUsername = document.getElementById("newUsername").value;
+  const newPassword = document.getElementById("newPassword").value;
+
+  // إضافة الحساب الجديد
+  users.push({ username: newUsername, password: newPassword, role: "user" });
+  alert("تم إنشاء الحساب بنجاح!");
+  showLoginPage();
+});
+
+// دالة إظهار صفحة المتجر
+function showStorePage() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.add("hidden");
+  document.getElementById("storePage").classList.remove("hidden");
+  renderStore();
 }
 
-function saveCats(cats) {
-  localStorage.setItem("cats", JSON.stringify(cats));
+// دالة إظهار لوحة التحكم (للإدمن فقط)
+function showAdminPage() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.add("hidden");
+  document.getElementById("adminPage").classList.remove("hidden");
+  renderAdmin();
 }
 
-// عرض القطط في الصفحة الرئيسية
+// دالة إظهار صفحة التسجيل
+function showRegisterPage() {
+  document.getElementById("loginPage").classList.add("hidden");
+  document.getElementById("registerPage").classList.remove("hidden");
+}
+
+// دالة إظهار صفحة تسجيل الدخول
+function showLoginPage() {
+  document.getElementById("loginPage").classList.remove("hidden");
+  document.getElementById("registerPage").classList.add("hidden");
+}
+
+// دالة إغلاق الجلسة
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  showLoginPage();
+}
+
+// دالة عرض القطط في المتجر
 function renderStore() {
   const catsContainer = document.getElementById("catsContainer");
   catsContainer.innerHTML = "";
-  const cats = getCats();
+  const cats = defaultCats;
   cats.forEach(cat => {
     const card = document.createElement("div");
     card.className = "cat-card";
@@ -32,11 +95,11 @@ function renderStore() {
   });
 }
 
-// عرض القطط في لوحة التحكم
+// دالة عرض القطط في لوحة الإدارة
 function renderAdmin() {
   const adminCatsList = document.getElementById("adminCatsList");
   adminCatsList.innerHTML = "";
-  const cats = getCats();
+  const cats = defaultCats;
   cats.forEach((cat, index) => {
     const listItem = document.createElement("li");
     listItem.innerHTML = `
@@ -47,47 +110,23 @@ function renderAdmin() {
   });
 }
 
-// إضافة قطة جديدة
-document.getElementById("addCatForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const name = document.getElementById("catName").value;
-  const age = parseInt(document.getElementById("catAge").value);
-  const price = parseFloat(document.getElementById("catPrice").value);
-  const image = document.getElementById("catImage").value;
-
-  const cats = getCats();
-  cats.push({ name, age, price, image });
-  saveCats(cats);
-
-  renderAdmin();
-  renderStore();
-
-  e.target.reset();
-});
-
-// حذف قطة
+// دالة حذف قطة
 function deleteCat(index) {
-  const cats = getCats();
-  cats.splice(index, 1);
-  saveCats(cats);
-
+  defaultCats.splice(index, 1);
   renderAdmin();
   renderStore();
 }
 
-// التنقل بين الصفحات
-function showStore() {
-  document.getElementById("storePage").classList.remove("hidden");
-  document.getElementById("adminPage").classList.add("hidden");
-}
-
-function showAdminPanel() {
-  document.getElementById("storePage").classList.add("hidden");
-  document.getElementById("adminPage").classList.remove("hidden");
-}
-
-// تهيئة البيانات عند التحميل
-document.addEventListener("DOMContentLoaded", () => {
-  renderStore();
-  renderAdmin();
+// تهيئة الصفحة عند تحميلها
+document.addEventListener("DOMContentLoaded", function() {
+  if (localStorage.getItem("loggedInUser")) {
+    const user = JSON.parse(localStorage.getItem("loggedInUser"));
+    if (user.role === "admin") {
+      showAdminPage();
+    } else {
+      showStorePage();
+    }
+  } else {
+    showLoginPage();
+  }
 });
