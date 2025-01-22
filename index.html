@@ -3,48 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>متجر القطط</title>
+  <title>لوحة تحكم الأدمن - متجر القطط</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- الصفحة الرئيسية -->
-  <div id="storePage" class="page">
+  <!-- صفحة تسجيل الدخول -->
+  <div id="loginPage" class="page">
     <header>
-      <h1>متجر القطط</h1>
+      <h1>تسجيل الدخول للأدمن</h1>
     </header>
     <main>
-      <h2>القطط المتوفرة</h2>
-      <div id="catsContainer" class="cats-container">
-        <!-- سيتم ملء بيانات القطط ديناميكيًا -->
-      </div>
+      <form id="loginForm">
+        <input type="text" id="adminUsername" placeholder="اسم المستخدم" required>
+        <input type="password" id="adminPassword" placeholder="كلمة المرور" required>
+        <button type="submit">دخول</button>
+      </form>
     </main>
-    <footer>
-      <button onclick="showAdminPanel()">لوحة التحكم</button>
-    </footer>
   </div>
 
-  <!-- لوحة التحكم -->
-  <div id="adminPage" class="page hidden">
+  <!-- لوحة تحكم الأدمن -->
+  <div id="adminPanel" class="page hidden">
     <header>
       <h1>لوحة التحكم</h1>
+      <button id="logoutButton">تسجيل الخروج</button>
     </header>
     <main>
-      <h2>إدارة القطط</h2>
-      <form id="addCatForm">
-        <input type="text" id="catName" placeholder="اسم القطة" required>
-        <input type="number" id="catAge" placeholder="عمر القطة (بالشهور)" required>
-        <input type="number" id="catPrice" placeholder="السعر" required>
-        <input type="text" id="catImage" placeholder="رابط صورة القطة" required>
-        <button type="submit">إضافة القطة</button>
-      </form>
-      <h3>القائمة الحالية</h3>
-      <ul id="adminCatsList">
-        <!-- سيتم ملء بيانات القطط ديناميكيًا -->
-      </ul>
+      <section id="addProduct">
+        <h2>إضافة منتج جديد</h2>
+        <form id="addProductForm">
+          <input type="text" id="productName" placeholder="اسم القطة" required>
+          <input type="number" id="productAge" placeholder="العمر (بالأشهر)" required>
+          <input type="number" id="productPrice" placeholder="السعر" required>
+          <input type="text" id="productImage" placeholder="رابط صورة القطة" required>
+          <button type="submit">إضافة</button>
+        </form>
+      </section>
+      <section id="productList">
+        <h2>المنتجات المتاحة</h2>
+        <ul id="productItems">
+          <!-- المنتجات ستُعرض هنا ديناميكياً -->
+        </ul>
+      </section>
     </main>
-    <footer>
-      <button onclick="showStore()">العودة إلى المتجر</button>
-    </footer>
   </div>
 
   <script src="script.js"></script>
